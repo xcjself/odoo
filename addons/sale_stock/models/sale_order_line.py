@@ -288,7 +288,7 @@ class SaleOrderLine(models.Model):
     def _prepare_procurement_group_vals(self):
         return {
             'name': self.order_id.name,
-            'move_type': self.order_id.picking_policy,
+            'move_type': self.order_id.picking_policy, # picking_policy为送货策略(尽快、当所有产品就绪时)
             'sale_id': self.order_id.id,
             'partner_id': self.order_id.partner_shipping_id.id,
         }
@@ -312,6 +312,7 @@ class SaleOrderLine(models.Model):
             if float_compare(qty, line.product_uom_qty, precision_digits=precision) == 0:
                 continue
 
+            # 获取或创建补货组
             group_id = line._get_procurement_group()
             if not group_id:
                 group_id = self.env['procurement.group'].create(line._prepare_procurement_group_vals())
