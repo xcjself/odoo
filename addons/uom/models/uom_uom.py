@@ -204,6 +204,7 @@ class UoM(models.Model):
             :param raise_if_failure: only if the conversion is not possible
                 - if true, raise an exception if the conversion is not possible (different UoM category),
                 - otherwise, return the initial quantity
+            将当前UoM的数量转换为指定UoM的数量。
         """
         if not self or not qty:
             return qty
