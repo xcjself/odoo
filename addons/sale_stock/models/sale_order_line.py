@@ -256,6 +256,7 @@ class SaleOrderLine(models.Model):
         return values
 
     def _get_qty_procurement(self, previous_product_uom_qty=False):
+        """ 获取已补货数量。 """
         self.ensure_one()
         qty = 0.0
         outgoing_moves, incoming_moves = self._get_outgoing_incoming_moves()
