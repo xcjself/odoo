@@ -256,7 +256,7 @@ class SaleOrderLine(models.Model):
         return values
 
     def _get_qty_procurement(self, previous_product_uom_qty=False):
-        """ 获取已补货数量。 """
+        """ 获取已安排发货数量(相关发货单数量-相关退货单数量)。 """
         self.ensure_one()
         qty = 0.0
         outgoing_moves, incoming_moves = self._get_outgoing_incoming_moves()
@@ -330,7 +330,7 @@ class SaleOrderLine(models.Model):
                     group_id.write(updated_vals)
 
             values = line._prepare_procurement_values(group_id=group_id)
-            product_qty = line.product_uom_qty - qty
+            product_qty = line.product_uom_qty - qty # 未安排发货数量，不等于未安排补货数量，因此可能造成重复补货(bug?)
 
             line_uom = line.product_uom
             quant_uom = line.product_id.uom_id
